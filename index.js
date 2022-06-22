@@ -2,6 +2,7 @@ const canvasContainer = document.querySelector('#canvas-container');
 
 function createCanvas(canvasHeight, canvasWidth, bgColor, pixelColumns, pixelRows) {
     const canvas = document.createElement('div');
+    canvas.setAttribute('id', 'canvas');
     canvas.style.height = `${canvasHeight}px`;
     canvas.style.width = `${canvasWidth}px`;
     canvas.style.backgroundColor = bgColor;
