@@ -34,10 +34,10 @@ function createPixel(pixelHeight, pixelWidth) {
     pixel.addEventListener('mouseover', function(e) {
         if (isLeftClickPressed) {
             setPixelBackgroundColor(e.target);
-        }
+        };
     });
     pixel.addEventListener('click', function(e) {
-        setPixelBackgroundColor(e.target)
+        setPixelBackgroundColor(e.target);
     });
     pixel.addEventListener('mousedown', function(e) {
         setPixelBackgroundColor(e.target);
@@ -54,7 +54,7 @@ function renderPixelsToCanvas(canvasHeight, canvasWidth, pixelColumns, pixelRows
 
 function setPixelBackgroundColor(pixel) {
     pixel.style.backgroundColor = paintingColor;
-}
+};
 
 document.addEventListener('mousedown', function(e) {
     if (e.button === LEFT_CLICK_BUTTON_CODE) {
@@ -66,12 +66,12 @@ document.addEventListener('mouseup', function(e) {
     if (e.button === LEFT_CLICK_BUTTON_CODE) {
         isLeftClickPressed = false;
     };
-})
+});
 
 preventElementDragging();
 function preventElementDragging() {
     // prevents dragging bug from occurring
     document.addEventListener('dragstart', (e) => {
-        e.preventDefault()
+        e.preventDefault();
     });
-}
+};
