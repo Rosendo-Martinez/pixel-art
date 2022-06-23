@@ -1,4 +1,9 @@
+const LEFT_CLICK_BUTTON_CODE = 0;
 const canvasContainer = document.querySelector('#canvas-container');
+let isLeftClickPressed = false;
+let paintingColor = `black`;
+
+renderCanvasToDOMContainer(canvasContainer, createCanvas(500, 500, 'red', 10, 10));
 
 function createCanvas(canvasHeight, canvasWidth, bgColor, pixelColumns, pixelRows) {
     const canvas = document.createElement('div');
@@ -26,6 +31,17 @@ function createPixel(pixelHeight, pixelWidth) {
     const pixel = document.createElement('div');
     pixel.style.height = `${pixelHeight}px`;
     pixel.style.width = `${pixelWidth}px`;
+    pixel.addEventListener('mouseover', function(e) {
+        if (isLeftClickPressed) {
+            setPixelBackgroundColor(e.target);
+        }
+    });
+    pixel.addEventListener('click', function(e) {
+        setPixelBackgroundColor(e.target)
+    });
+    pixel.addEventListener('mousedown', function(e) {
+        setPixelBackgroundColor(e.target);
+    });
     return pixel;
 };
 
@@ -35,3 +51,19 @@ function renderPixelsToCanvas(canvasHeight, canvasWidth, pixelColumns, pixelRows
         canvas.appendChild(pixels[i]);
     };
 };
+
+function setPixelBackgroundColor(pixel) {
+    pixel.style.backgroundColor = paintingColor;
+}
+
+document.addEventListener('mousedown', function(e) {
+    if (e.button === LEFT_CLICK_BUTTON_CODE) {
+        isLeftClickPressed = true;
+    };
+});
+
+document.addEventListener('mouseup', function(e) {
+    if (e.button === LEFT_CLICK_BUTTON_CODE) {
+        isLeftClickPressed = false;
+    };
+})
