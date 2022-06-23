@@ -1,5 +1,6 @@
 const LEFT_CLICK_BUTTON_CODE = 0;
 const canvasContainer = document.querySelector('#canvas-container');
+const colorPicker = document.querySelector('#color-picker');
 let isLeftClickPressed = false;
 let paintingColor = `black`;
 
@@ -56,6 +57,10 @@ function setPixelBackgroundColor(pixel) {
     pixel.style.backgroundColor = paintingColor;
 };
 
+function updatePaintingColor(color) {
+    paintingColor = color;
+}
+
 document.addEventListener('mousedown', function(e) {
     if (e.button === LEFT_CLICK_BUTTON_CODE) {
         isLeftClickPressed = true;
@@ -67,6 +72,10 @@ document.addEventListener('mouseup', function(e) {
         isLeftClickPressed = false;
     };
 });
+
+colorPicker.addEventListener('change', function(e) {
+    updatePaintingColor(e.target.value);
+})
 
 preventElementDragging();
 function preventElementDragging() {
