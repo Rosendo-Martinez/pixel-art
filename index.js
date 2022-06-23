@@ -67,3 +67,11 @@ document.addEventListener('mouseup', function(e) {
         isLeftClickPressed = false;
     };
 })
+
+preventElementDragging();
+function preventElementDragging() {
+    // prevents dragging bug from occurring
+    document.addEventListener('dragstart', (e) => {
+        e.preventDefault()
+    });
+}
