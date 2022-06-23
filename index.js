@@ -2,11 +2,13 @@ const LEFT_CLICK_BUTTON_CODE = 0;
 const canvasContainer = document.querySelector('#canvas-container');
 const colorPicker = document.querySelector('#color-picker');
 const eraseButton = document.querySelector('#erase-button');
+const resetCanvasButton = document.querySelector('#reset-canvas-button');
 let isLeftClickPressed = false;
 let paintingColor = `black`;
 let isErasing = false;
+let canvas = createCanvas(500, 500, 'red', 10, 10);
 
-renderCanvasToDOMContainer(canvasContainer, createCanvas(500, 500, 'red', 10, 10));
+renderCanvasToDOMContainer(canvasContainer, canvas);
 
 function createCanvas(canvasHeight, canvasWidth, bgColor, pixelColumns, pixelRows) {
     const canvas = document.createElement('div');
@@ -20,6 +22,12 @@ function createCanvas(canvasHeight, canvasWidth, bgColor, pixelColumns, pixelRow
 
 function renderCanvasToDOMContainer(canvasContainer, canvas) {
     canvasContainer.appendChild(canvas);
+};
+
+function resetCanvas() {
+    canvasContainer.removeChild(canvas);
+    canvas = createCanvas(500, 500, 'red', 10, 10);
+    renderCanvasToDOMContainer(canvasContainer, canvas);
 };
 
 function createPixels(canvasHeight, canvasWidth, pixelColumns, pixelRows) {
@@ -87,9 +95,9 @@ colorPicker.addEventListener('change', function(e) {
     updatePaintingColor(e.target.value);
 })
 
-eraseButton.addEventListener('click', function(e) {
-    toggleEraser();
-});
+eraseButton.addEventListener('click', toggleEraser);
+
+resetCanvasButton.addEventListener('click', resetCanvas);
 
 preventElementDragging();
 function preventElementDragging() {
