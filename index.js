@@ -3,10 +3,18 @@ const canvasContainer = document.querySelector('#canvas-container');
 const colorPicker = document.querySelector('#color-picker');
 const eraseButton = document.querySelector('#erase-button');
 const resetCanvasButton = document.querySelector('#reset-canvas-button');
+const pixelDensityInput = document.querySelector('#pixel-density-input');
+const canvasProperties = {
+    height: 500,
+    width: 500,
+    backgroundColor: 'red',
+    columns: 11,
+    rows: 11,
+};
 let isLeftClickPressed = false;
 let paintingColor = `black`;
 let isErasing = false;
-let canvas = createCanvas(500, 500, 'red', 10, 10);
+let canvas = createCanvas(canvasProperties.height, canvasProperties.width, canvasProperties.backgroundColor, canvasProperties.columns,canvasProperties.rows);
 
 renderCanvasToDOMContainer(canvasContainer, canvas);
 
@@ -26,7 +34,7 @@ function renderCanvasToDOMContainer(canvasContainer, canvas) {
 
 function resetCanvas() {
     canvasContainer.removeChild(canvas);
-    canvas = createCanvas(500, 500, 'red', 10, 10);
+    canvas = createCanvas(canvasProperties.height, canvasProperties.width, canvasProperties.backgroundColor, canvasProperties.columns,canvasProperties.rows);
     renderCanvasToDOMContainer(canvasContainer, canvas);
 };
 
@@ -79,6 +87,12 @@ function toggleEraser() {
     isErasing = !isErasing;
 };
 
+function updatePixelDensity(density) {
+    canvasProperties.rows = density;
+    canvasProperties.columns = density;
+    resetCanvas();
+};
+
 document.addEventListener('mousedown', function(e) {
     if (e.button === LEFT_CLICK_BUTTON_CODE) {
         isLeftClickPressed = true;
@@ -99,9 +113,18 @@ eraseButton.addEventListener('click', toggleEraser);
 
 resetCanvasButton.addEventListener('click', resetCanvas);
 
+pixelDensityInput.addEventListener('change', function(e) {
+    if (e.target.value !== '') {
+        const num = Number.parseInt(e.target.value);
+        if (num >= 1 && num <= 100) {
+            updatePixelDensity(num);
+        };
+    };
+});
+
 preventElementDragging();
 function preventElementDragging() {
-    // prevents dragging bug from occurring
+    // prevents dragging pixels bug from occurring
     document.addEventListener('dragstart', (e) => {
         e.preventDefault();
     });
