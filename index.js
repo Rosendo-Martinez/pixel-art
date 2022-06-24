@@ -4,6 +4,7 @@ const colorPicker = document.querySelector('#color-picker');
 const eraseButton = document.querySelector('#erase-button');
 const resetCanvasButton = document.querySelector('#reset-canvas-button');
 const pixelDensityInput = document.querySelector('#pixel-density-input');
+const canvasBgColorInput = document.querySelector('#canvas-bgColor-input');
 const canvasProperties = {
     height: 500,
     width: 500,
@@ -93,6 +94,11 @@ function updatePixelDensity(density) {
     resetCanvas();
 };
 
+function updateCanvasBgColor(color) {
+    canvasProperties.backgroundColor = color;
+    resetCanvas();
+};
+
 document.addEventListener('mousedown', function(e) {
     if (e.button === LEFT_CLICK_BUTTON_CODE) {
         isLeftClickPressed = true;
@@ -120,6 +126,10 @@ pixelDensityInput.addEventListener('change', function(e) {
             updatePixelDensity(num);
         };
     };
+});
+
+canvasBgColorInput.addEventListener('change', function(e) {
+    updateCanvasBgColor(e.target.value);
 });
 
 preventElementDragging();
