@@ -26,6 +26,7 @@ const resetCanvasButton = document.querySelector('#reset-canvas-button');
 const pixelDensityInput = document.querySelector('#pixel-density-input');
 const canvasBgColorInput = document.querySelector('#canvas-bgColor-input');
 const canvasTypeRadios = document.querySelectorAll('.canvas-type-radio-input');
+const canvasSizeFactorInput = document.querySelector('#canvas-size-factor-input');
 const canvasProperties = {
     height: 500,
     width: 500,
@@ -35,7 +36,8 @@ const canvasProperties = {
     columnsRatio: 1,
     rowsRatio: 1,
     pixelDensityFactor: 5,
-    canvasSizeFactor: 2,
+    canvasSizeFactor: 2.25,
+    type: 'square'
 };
 let isLeftClickPressed = false;
 let paintingColor = `black`;
@@ -122,10 +124,10 @@ function toggleEraser() {
     isErasing = !isErasing;
 };
 
-function updatePixelDensity(factor) {
-    canvasProperties.rows = factor * canvasProperties.rowsRatio;
-    canvasProperties.columns = factor * canvasProperties.columnsRatio;
-    canvasProperties.pixelDensityFactor = factor;
+function updatePixelDensity(newPixelDensityFactor) {
+    canvasProperties.rows = newPixelDensityFactor * canvasProperties.rowsRatio;
+    canvasProperties.columns = newPixelDensityFactor * canvasProperties.columnsRatio;
+    canvasProperties.pixelDensityFactor = newPixelDensityFactor;
     resetCanvas();
 };
 
@@ -141,6 +143,7 @@ function updateCanvasType(type) {
     canvasProperties.height = CANVAS_TYPES[type].baseHeight * canvasProperties.canvasSizeFactor;
     canvasProperties.rows = canvasProperties.rowsRatio * canvasProperties.pixelDensityFactor;
     canvasProperties.columns = canvasProperties.columnsRatio * canvasProperties.pixelDensityFactor;
+    canvasProperties.type = type;
     resetCanvas();
 }
 
@@ -157,6 +160,20 @@ function preventElementDragging() {
     document.addEventListener('dragstart', (e) => {
         e.preventDefault();
     });
+};
+
+function updateCanvasSize(newSizeFactor) {
+    if (newSizeFactor == 1) {
+        newSizeFactor = 1.5;
+    } else if (newSizeFactor == 2) {
+        newSizeFactor = 2.25;
+    } else if (newSizeFactor == 3) {
+        newSizeFactor = 2.75;
+    }
+    canvasProperties.width = CANVAS_TYPES[canvasProperties.type].baseWidth * newSizeFactor;
+    canvasProperties.height = CANVAS_TYPES[canvasProperties.type].baseHeight * newSizeFactor;
+    canvasProperties.canvasSizeFactor = newSizeFactor;
+    resetCanvas();
 };
 
 document.addEventListener('mousedown', function(e) {
@@ -190,4 +207,8 @@ pixelDensityInput.addEventListener('change', function(e) {
 
 canvasBgColorInput.addEventListener('change', function(e) {
     updateCanvasBgColor(e.target.value);
+});
+
+canvasSizeFactorInput.addEventListener('change', function(e) {
+    updateCanvasSize(e.target.value);
 });
