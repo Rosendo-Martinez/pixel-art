@@ -1,4 +1,93 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: rgb(236, 236, 236);
+}
+
+h1 {
+    margin-bottom: 0;
+}
+
+input[type='color'] {
+    display: block;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    background-color: white;
+}
+
+input[type='range'], input[type='number'] {
+    display: block;
+    width: 100%;
+}
+
+button {
+    padding: 0.3em 1.2em;
+    font-weight: bold;
+    background-color: white;
+}
+
+button:hover {
+    background-color: rgb(219, 215, 215);
+}
+
+input:hover, button:hover {
+    cursor: pointer;
+}
+
 #canvas {
     display: flex;
     flex-wrap: wrap;
+}
+
+#controls-container {
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+#canvas-container {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvas {
+    box-shadow: 0 0 10px rgb(71, 65, 65);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+    padding: 1em 1.5em;
+    box-sizing: border-box;
+}
+
+.color-input-type-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.erase {
+    background-color: rgb(219, 215, 215);
+}
+
+.copyright {
+    color: rgba(0, 0, 0, 0.3);
+    margin-top: auto;
+    align-self: center;
+    font-size: 0.6rem;
+}
+
+.copyright a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.radio-container {
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
 }

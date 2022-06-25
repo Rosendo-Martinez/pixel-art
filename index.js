@@ -122,6 +122,7 @@ function updatePaintingColor(color) {
 
 function toggleEraser() {
     isErasing = !isErasing;
+    eraseButton.classList.toggle('erase');
 };
 
 function updatePixelDensity(newPixelDensityFactor) {
