@@ -1,3 +1,23 @@
+const CANVAS_TYPES = {
+    square: {
+        rowsRatio: 1,
+        columnsRatio: 1,
+        baseWidth: 250,
+        baseHeight: 250
+    },
+    portrait: {
+        rowsRatio: 3,
+        columnsRatio: 2,
+        baseWidth: 200,
+        baseHeight: 300
+    },
+    landscape: {
+        rowsRatio: 2,
+        columnsRatio: 3,
+        baseWidth: 300,
+        baseHeight: 200
+    },
+};
 const LEFT_CLICK_BUTTON_CODE = 0;
 const canvasContainer = document.querySelector('#canvas-container');
 const colorPicker = document.querySelector('#color-picker');
@@ -5,19 +25,33 @@ const eraseButton = document.querySelector('#erase-button');
 const resetCanvasButton = document.querySelector('#reset-canvas-button');
 const pixelDensityInput = document.querySelector('#pixel-density-input');
 const canvasBgColorInput = document.querySelector('#canvas-bgColor-input');
+const canvasTypeRadios = document.querySelectorAll('.canvas-type-radio-input');
 const canvasProperties = {
     height: 500,
     width: 500,
     backgroundColor: 'red',
-    columns: 11,
-    rows: 11,
+    columns: 6,
+    rows: 6,
+    columnsRatio: 1,
+    rowsRatio: 1,
+    pixelDensityFactor: 5,
+    canvasSizeFactor: 2,
 };
 let isLeftClickPressed = false;
 let paintingColor = `black`;
 let isErasing = false;
 let canvas = createCanvas(canvasProperties.height, canvasProperties.width, canvasProperties.backgroundColor, canvasProperties.columns,canvasProperties.rows);
 
+preventElementDragging();
 renderCanvasToDOMContainer(canvasContainer, canvas);
+
+canvasTypeRadios.forEach((radio) => {
+    radio.addEventListener('change', (e) => {
+            updateRadios(canvasTypeRadios, e.target);
+            updateCanvasType(e.target.value);
+        }
+    );
+});
 
 function createCanvas(canvasHeight, canvasWidth, bgColor, pixelColumns, pixelRows) {
     const canvas = document.createElement('div');
@@ -88,15 +122,41 @@ function toggleEraser() {
     isErasing = !isErasing;
 };
 
-function updatePixelDensity(density) {
-    canvasProperties.rows = density;
-    canvasProperties.columns = density;
+function updatePixelDensity(factor) {
+    canvasProperties.rows = factor * canvasProperties.rowsRatio;
+    canvasProperties.columns = factor * canvasProperties.columnsRatio;
+    canvasProperties.pixelDensityFactor = factor;
     resetCanvas();
 };
 
 function updateCanvasBgColor(color) {
     canvasProperties.backgroundColor = color;
     resetCanvas();
+};
+
+function updateCanvasType(type) {
+    canvasProperties.rowsRatio = CANVAS_TYPES[type].rowsRatio;
+    canvasProperties.columnsRatio = CANVAS_TYPES[type].columnsRatio;
+    canvasProperties.width = CANVAS_TYPES[type].baseWidth * canvasProperties.canvasSizeFactor;
+    canvasProperties.height = CANVAS_TYPES[type].baseHeight * canvasProperties.canvasSizeFactor;
+    canvasProperties.rows = canvasProperties.rowsRatio * canvasProperties.pixelDensityFactor;
+    canvasProperties.columns = canvasProperties.columnsRatio * canvasProperties.pixelDensityFactor;
+    resetCanvas();
+}
+
+function updateRadios(radios, checkedRadio) {
+    radios.forEach((radio) => {
+        if (radio.checked && (radio.value !== checkedRadio.value)) {
+            radio.checked = false;
+        };
+    });
+};
+
+function preventElementDragging() {
+    // prevents dragging pixels bug from occurring
+    document.addEventListener('dragstart', (e) => {
+        e.preventDefault();
+    });
 };
 
 document.addEventListener('mousedown', function(e) {
@@ -131,11 +191,3 @@ pixelDensityInput.addEventListener('change', function(e) {
 canvasBgColorInput.addEventListener('change', function(e) {
     updateCanvasBgColor(e.target.value);
 });
-
-preventElementDragging();
-function preventElementDragging() {
-    // prevents dragging pixels bug from occurring
-    document.addEventListener('dragstart', (e) => {
-        e.preventDefault();
-    });
-};
